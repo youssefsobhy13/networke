@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>شبكات الحاسب — محاضرة 1 و 2 | Computer Networks L1 & L2</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Inter:wght@400;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bad-10:rgba(220,38,38,0.1);--c-8:rgba(37,99,235,0.08);--c-10:rgba(37,99,235,0.1);--c-14:rgba(37,99,235,0.14);--c-16:rgba(37,99,235,0.16);--c-20:rgba(37,99,235,0.2);--c-40:rgba(37,99,235,0.4);--c-45:rgba(37,99,235,0.45);--g-10:rgba(8,145,178,0.1);--m-8:rgba(225,29,72,0.08);--ok-10:rgba(22,163,74,0.1);--ok-12:rgba(22,163,74,0.12);--bg:#F4F7FB;--card:#fff;--tx:#14213D;--mu:#64708A;--c:#2563EB;--m:#E11D48;--g:#0891B2;--ok:#16A34A;--bad:#DC2626;--bd:#E2E8F0;--sh:0 1px 3px rgba(20,33,61,.07);--shh:0 10px 26px rgba(20,33,61,.12);--ease:all .2s cubic-bezier(.4,0,.2,1);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme=dark]{--bad-10:rgba(248,113,113,0.1);--c-8:rgba(96,165,250,0.08);--c-10:rgba(96,165,250,0.1);--c-14:rgba(96,165,250,0.14);--c-16:rgba(96,165,250,0.16);--c-20:rgba(96,165,250,0.2);--c-40:rgba(96,165,250,0.4);--c-45:rgba(96,165,250,0.45);--g-10:rgba(34,211,238,0.1);--m-8:rgba(251,113,133,0.08);--ok-10:rgba(74,222,128,0.1);--ok-12:rgba(74,222,128,0.12);--bg:#0B1220;--card:#131C2E;--tx:#EAF0FF;--mu:#9AA8C7;--c:#60A5FA;--m:#FB7185;--g:#22D3EE;--ok:#4ADE80;--bad:#F87171;--bd:#24304A;--sh:0 1px 3px rgba(0,0,0,.4);--shh:0 10px 26px rgba(0,0,0,.5)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.75 Inter,Cairo,system-ui,sans-serif;min-height:100vh}
+html[lang=ar] body,html[lang=ar] button,html[lang=ar] input,html[lang=ar] textarea,html[lang=ar] select{font-family:Cairo,Tajawal,sans-serif}
+code,.mono{font-family:'JetBrains Mono',monospace;direction:ltr;unicode-bidi:embed}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;background:linear-gradient(90deg,var(--c),var(--g));transition:width .15s}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--card);border-bottom:1px solid var(--bd)}
+.logo{font-weight:700;font-size:1.15rem;white-space:nowrap;letter-spacing:-.02em}.logo b{color:var(--c)}
+header nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}header nav::-webkit-scrollbar{display:none}
+header nav a{flex:none;color:var(--mu);text-decoration:none;padding:6px 14px;border-radius:999px;font-size:.9rem;font-weight:500;transition:var(--ease);white-space:nowrap}
+header nav a:hover{color:var(--tx);background:var(--c-8)}
+header nav a.on{color:var(--c);background:var(--c-14);font-weight:600}
+button{font:inherit;color:inherit;cursor:pointer;background:var(--card);border:1px solid var(--bd);border-radius:999px;padding:6px 16px;transition:var(--ease)}
+button:hover,button.on{border-color:var(--c);color:var(--c)}
+button:active{transform:scale(.97)}
+:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.ib{min-width:38px;min-height:38px;padding:0 12px}
+section{max-width:1040px;margin:auto;padding:40px 20px}
+h1{font-size:clamp(2rem,4.4vw,3.1rem);line-height:1.2;letter-spacing:-.02em;margin:0 0 12px}
+h2{font-size:1.4rem;margin:0 0 18px;letter-spacing:-.01em}
+h3{margin:.2em 0 .6em}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:30px 0 10px}
+@media(max-width:860px){.hero{grid-template-columns:1fr}}
+.eyebrow{display:inline-block;font-weight:600;color:var(--c);margin-bottom:10px}
+.lead{color:var(--mu);font-size:1.12rem;max-width:52ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px}
+.pill{display:inline-block;padding:3px 14px;border-radius:999px;border:1px solid var(--bd);background:var(--card);font-size:.85rem;font-weight:500;margin-inline-end:4px}
+.btn,a.btn{display:inline-block;background:linear-gradient(135deg,var(--c),var(--g));color:#fff;border:0;border-radius:999px;padding:10px 24px;font-weight:600;text-decoration:none;transition:var(--ease)}
+.btn:hover{transform:translateY(-2px);box-shadow:var(--shh);color:#fff}
+:root[data-theme=dark] .btn{color:#0B1220}:root[data-theme=dark] .btn:hover{color:#0B1220}
+.net{width:100%;max-width:420px;justify-self:center}
+.net line{stroke:var(--c);stroke-opacity:.35;stroke-width:1.5;stroke-dasharray:4 6;animation:dash 6s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-100}}
+.net circle{fill:var(--c);transform-box:fill-box;transform-origin:center;animation:pu 3s ease-in-out infinite}
+.net circle:nth-of-type(3n){fill:var(--m)}.net circle:nth-of-type(3n+1){fill:var(--g)}
+.net circle:nth-of-type(2n){animation-delay:.7s}
+@keyframes pu{50%{transform:scale(1.35);opacity:.7}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-top:30px}
+.stat{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px 20px;box-shadow:var(--sh);transition:var(--ease)}
+.stat:hover{transform:translateY(-2px);box-shadow:var(--shh)}
+.stat span{font-size:1.7rem}.stat b{display:block;font-size:1.6rem;line-height:1.1;color:var(--c)}.stat small{color:var(--mu)}
+.card,details{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px 22px;margin:12px 0;box-shadow:var(--sh);transition:var(--ease)}
+.card:hover,details:hover{transform:translateY(-2px);box-shadow:var(--shh)}
+details[open]{border-color:var(--c-40)}
+summary{cursor:pointer;font-weight:600;font-size:1.05rem;list-style:none;display:flex;gap:10px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"▸";margin-inline-start:auto;color:var(--mu);transition:transform .2s}
+details[open] summary::after{transform:rotate(90deg)}
+[dir=rtl] summary::after{content:"◂"}[dir=rtl] details[open] summary::after{transform:rotate(-90deg)}
+.tip,.mn{margin:10px 0 0;padding:10px 14px;border-radius:12px;font-size:.92rem}
+.tip{background:var(--g-10);border-inline-start:4px solid var(--g)}
+.mn{background:var(--m-8);border-inline-start:4px solid var(--m)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;margin:10px 0}
+td,th{border-bottom:1px solid var(--bd);padding:8px 12px;text-align:start}
+th{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mu)}
+.wrap{overflow-x:auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.opt{display:block;width:100%;text-align:start;margin:8px 0;padding:12px 16px;border-radius:12px;background:var(--bg)}
+.ok{border-color:var(--ok)!important;background:var(--ok-12)!important}
+.no{border-color:var(--bad)!important;background:var(--bad-10)!important}
+input,textarea,select{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;width:100%;transition:var(--ease)}
+input:focus,textarea:focus,select:focus{outline:0;border-color:var(--c);box-shadow:0 0 0 3px var(--c-20)}
+select{width:auto}input[type=range]{accent-color:var(--c);padding:0}progress{accent-color:var(--c);height:8px}
+.fc{perspective:900px;height:160px;cursor:pointer}
+.fc>div{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.fc.fl>div{transform:rotateY(180deg)}
+.fc>div>div{position:absolute;top:0;left:0;right:0;bottom:0;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;border-radius:20px;border:1px solid var(--bd);background:var(--card);box-shadow:var(--shh);font-size:1.2rem}
+.fc>div>div+div{transform:rotateY(180deg);background:var(--c-10)}
+.me.card{max-width:400px;margin:0 auto 24px;text-align:center;padding:34px 26px 26px;border-radius:28px;animation:up .6s both}
+.me.card:hover{transform:translateY(-8px);box-shadow:0 24px 48px -16px var(--c-45)}
+.avw{position:relative;width:170px;height:170px;margin:0 auto 22px}
+.avw::before{content:"";position:absolute;top:-6px;left:-6px;right:-6px;bottom:-6px;border-radius:50%;background:conic-gradient(var(--c),var(--m),var(--g),var(--c));filter:blur(8px);opacity:.7;animation:spin 6s linear infinite}
+.av{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;border:4px solid var(--card);background:var(--c);color:#fff;display:grid;place-items:center;font-size:2.8rem;font-weight:700;animation:br 4s ease-in-out infinite}
+.av img{width:100%;height:100%;object-fit:cover}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes br{50%{transform:scale(1.03)}}
+.me h3{font-size:1.5rem;margin:0 0 6px}
+.me h3::after{content:"";display:block;width:64px;height:3px;border-radius:3px;margin:10px auto 0;background:linear-gradient(90deg,var(--c),var(--m),var(--g))}
+.badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:5px 16px;border-radius:999px;font-size:.82rem;font-weight:600;color:var(--ok);border:1px solid var(--ok);background:var(--ok-10)}
+.badge i{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pu 2s ease-in-out infinite}
+.cts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:0 0 18px}
+.cc{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-items:center;padding:20px 22px;border:1px solid var(--bd);border-radius:16px;background:var(--card);color:var(--tx);text-decoration:none;box-shadow:var(--sh);transition:var(--ease);animation:up .5s both}
+.cc:nth-child(2){animation-delay:.08s}.cc:nth-child(3){animation-delay:.16s}.cc:nth-child(4){animation-delay:.24s}
+.cc .ci{grid-row:1/3;position:relative;width:54px;height:54px;border-radius:50%;display:grid;place-items:center;font-size:1.6rem;color:#fff;font-weight:700;background:var(--g2);transition:transform .3s}
+.cc:hover .ci{transform:scale(1.12) rotate(-8deg)}
+.cc b{align-self:end}.cc small{color:var(--mu);align-self:start}
+.cc::after{content:"";position:absolute;top:0;left:-120%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:left .7s}
+.cc:hover::after{left:140%}.cc:hover{border-color:transparent;box-shadow:0 12px 30px -8px var(--gc)}
+.wa{--g2:linear-gradient(135deg,#25D366,#128C7E);--gc:rgba(37,211,102,.5)}
+.em{--g2:linear-gradient(135deg,#2563EB,#0891B2);--gc:rgba(37,99,235,.45)}
+.gh{--g2:linear-gradient(135deg,#475569,#0f172a);--gc:rgba(71,85,105,.5)}
+.li{--g2:linear-gradient(135deg,#0A66C2,#004182);--gc:rgba(10,102,194,.5)}
+.wa .ci::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;border-radius:50%;border:2px solid #25D366;animation:ring 2s ease-out infinite}
+@keyframes ring{from{transform:scale(1);opacity:.7}to{transform:scale(1.4);opacity:0}}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s,box-shadow .2s,border-color .2s}.rv.in{opacity:1;transform:none}
+.float{position:fixed;z-index:-1;font-size:1.6rem;opacity:.1;pointer-events:none;top:0;animation:fl linear infinite}
+@keyframes fl{from{transform:translateY(105vh) rotate(0)}to{transform:translateY(-15vh) rotate(360deg)}}
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:14px 22px;background:var(--card);border-top:1px solid var(--bd);color:var(--mu);font-size:.85rem}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media print{header,#bar,.float,.lab,.noprint{display:none}body{background:#fff;color:#000}}
+#bgfx{position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.vw{animation:up .3s both}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
+.lc{text-align:start;border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:4px;box-shadow:var(--sh)}
+.lc:hover{transform:translateY(-3px);box-shadow:var(--shh)}.lc .n{font-size:1.8rem}.lc b{font-size:1.05rem}.lc small{color:var(--mu)}
+.lay{display:grid;grid-template-columns:290px minmax(0,1fr);gap:28px;max-width:1180px;margin:auto;padding:28px 20px}
+.side{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:12px}
+.sh{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin:4px 8px 8px}
+.it{display:flex;gap:8px;width:100%;text-align:start;border:0;border-radius:10px;background:none;padding:8px 12px;font-size:.9rem;line-height:1.4}
+.it:hover{background:var(--c-8)}.it.on{background:var(--c-14);color:var(--c);font-weight:600}
+.it.dn::after{content:"✓";margin-inline-start:auto;color:var(--ok);font-weight:700}
+.pg{margin:14px 8px 4px;font-size:.8rem;color:var(--mu)}
+.bc{font-size:.85rem;color:var(--mu);margin-bottom:14px}.bc a{color:var(--mu);text-decoration:none}.bc a:hover{color:var(--c)}.bc b{color:var(--tx);font-weight:500}
+.pn{display:flex;justify-content:space-between;gap:12px;margin-top:32px;flex-wrap:wrap}
+@media(max-width:860px){.lay{grid-template-columns:1fr}.side{position:static;display:flex;gap:6px;overflow-x:auto;max-height:none}.it{flex:none;width:auto;white-space:nowrap}.sh,.pg{display:none}}
+.net .d{fill:var(--card);stroke:var(--c);stroke-width:2;stroke-linejoin:round}
+.net .sc{fill:var(--c-16)}
+.net .led{fill:var(--ok)}.net .pkt{fill:var(--m)}
+.net .wf{fill:none;stroke:var(--g);stroke-width:2.5;stroke-linecap:round;animation:wf 2s ease-in-out infinite}
+@keyframes wf{50%{opacity:.25}}
+.net .dv{animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+#contact{border-top:1px solid var(--bd);margin-top:30px}
+.net.tp{max-width:480px;display:block;margin:6px 0}
+.net .src{stroke:var(--m);stroke-width:3}.net .dst{stroke:var(--ok);stroke-width:3}
+.net .t{fill:var(--mu);font-size:9px;text-anchor:middle;stroke:none}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.fc{-webkit-perspective:900px}.fc>div{-webkit-transform-style:preserve-3d}
+.fc>div>div{-webkit-backface-visibility:hidden}
+.fc.fl>div{-webkit-transform:rotateY(180deg)}.fc>div>div+div{-webkit-transform:rotateY(180deg)}
+button,input,textarea,select{-webkit-appearance:none;appearance:none}
+input[type=range]{-webkit-appearance:auto;appearance:auto}progress{-webkit-appearance:auto;appearance:auto}
+</style>
+</head>
+<body>
+<canvas id=bgfx aria-hidden=true></canvas>
+<div id="bar"></div>
+<header><span class=logo>🌐 Net<b>·</b>Lab</span><nav aria-label="main"><a href="#" data-k="home"></a><a href="#" data-k="l1"></a><a href="#" data-k="l2"></a><a href="#" data-k="labs"></a><a href="#" data-k="quiz"></a><a href="#" data-k="fc"></a></nav><button class=ib id=fs aria-label="font size">A+</button><button class=ib id=th aria-label="theme">◐</button><button class=ib id=lg aria-label="language"></button></header>
+<main id="app"></main>
+<noscript><p style="padding:20px">Please enable JavaScript / فعّل الجافاسكربت عشان الصفحة تشتغل.</p></noscript>
+<footer id="foot"></footer>
+<script>
+const LS=(k,v)=>{try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}};
+let lang=LS('lang')||'ar',fz=+LS('fz')||16,theme=LS('theme');
+const T={
+home:['الرئيسية','Home'],l1:['محاضرة 1','Lecture 1'],l2:['محاضرة 2','Lecture 2'],labs:['معمل تفاعلي','Labs'],quiz:['كويز','Quiz'],fc:['فلاش كارد','Flashcards'],contact:['تواصل','Contact'],
+title:['شبكات الحاسب — محاضرة 1 و 2','Computer Networks — Lectures 1 & 2'],
+sub:['كل اللي في ch01 و ch02 بالعربي والإنجليزي ومعاه تطبيقات وكويز','Everything from ch01 & ch02, bilingual, with labs and a quiz'],
+start:['ابدأ التعلم','Start Learning'],c1:['مفهوم','Concepts'],c2:['سؤال','Questions'],c3:['معمل','Labs'],
+L1:['📖 محاضرة 1 — الاتصالات وشبكات البيانات','📖 Lecture 1 — Data Communications'],L2:['📡 محاضرة 2 — وسائط النقل','📡 Lecture 2 — Transmission Media'],
+watch:['💡 خد بالك','💡 Watch out'],mn:['🧠 افتكرها كده','🧠 Mnemonic'],
+LB:['🎮 المعامل التفاعلية','🎮 Interactive Labs'],
+tp:['معمل 1: ملعب التوبولوجي','Lab 1: Topology Playground'],links:['عدد الروابط','Links'],ports:['منافذ I/O لكل جهاز','I/O ports per device'],
+cb:['معمل 2: محاكي الكابلات (Straight vs Crossover)','Lab 2: Cable Simulator (Straight vs Crossover)'],
+devA:['الجهاز A','Device A'],devB:['الجهاز B','Device B'],cab:['الكابل','Cable'],chk:['افحص','Check'],
+Q:['🧪 كويز','🧪 Quiz'],next:['التالي','Next'],score:['النتيجة','Score'],why:['📝 ليه اتحل كده','📝 Why'],trap:['⚠️ فخ امتحان','⚠️ Exam trap'],again:['ابدأ تاني','Restart'],
+F:['🃏 فلاش كارد','🃏 Flashcards'],know:['أعرفها ✅','I know it ✅'],dk:['مش عارفها ❌','Not yet ❌'],tap:['اضغط للقلب','Tap to flip'],left:['باقي','Left'],
+C:['📞 تواصل','📞 Contact'],avail:['متاح للتعاون','Available for collaboration'],role:['طالب بكلية الحاسبات والذكاء الاصطناعي','Student of Computers and Artificial Intelligence'],
+uni:['جامعة سفنكس','Sphinx University'],age:['سني 19 سنة','I’m 19 years old'],msg:['ابعتلي رسالة','Send me a message'],send:['افتح واتساب','Open WhatsApp'],cp:['انسخ الإيميل','Copy email'],
+src:['المصدر: Forouzan — Data Communications and Networking, Lectures 1 & 2','Source: Forouzan — Data Communications and Networking, Lectures 1 & 2'],
+easy:['سهل','Easy'],mid:['متوسط','Medium'],hard:['صعب','Hard'],lang:['EN','عربي']};
+const tr=k=>T[k][lang=='ar'?0:1];
+const P=o=>o[lang=='ar'?0:1];
+const L1=[
+['📡',['تعريفات أساسية','Basic definitions'],['Telecommunication = اتصال عن بعد. Data = معلومات متفق على تمثيلها بين الأطراف. Data Communication = تبادل بيانات بين جهازين عن طريق وسيط نقل زي كابل.','Telecommunication = communication at a distance. Data = information in an agreed form. Data communication = exchange of data between two devices over a transmission medium such as a wire.'],['اتفاق الأطراف هو اللي بيعرّف "الداتا".','Data is defined by mutual agreement.'],['يعني "اتفقنا نمثلها إزاي".','"We agreed how to represent it."']],
+['🧩',['المكونات الخمسة (Fig 1.1)','5 components (Fig 1.1)'],['<b>Message</b> الرسالة، <b>Sender</b> المرسل، <b>Receiver</b> المستقبل، <b>Medium</b> وسيط النقل (twisted-pair, coaxial, fiber, radio)، <b>Protocol</b> مجموعة قواعد؛ من غيره الجهازين متوصلين بس مش بيتفاهموا.','<b>Message</b>, <b>Sender</b>, <b>Receiver</b>, <b>Medium</b> (twisted-pair, coaxial, fiber, radio), <b>Protocol</b> – rules; without it devices are connected but not communicating.'],['الـ Protocol هو المكون الوحيد المنطقي مش مادي.','Protocol is the only non-physical component.'],['M-S-R-M-P: "مين سأل ريم عن المعاد؟ بروتوكول".','M-S-R-M-P.']],
+['🔢',['تمثيل البيانات','Data representation'],['<span class=mono>ASCII 7-bit = 128 (2⁷) | Extended 8-bit = 256 | Unicode 16-bit = 65,536 | ISO 32-bit ≈ 4 billion</span>. الأرقام تتمثل باينري مباشرة، الصور بكسلات وألوان، الصوت والفيديو analog أو digital.','<span class=mono>ASCII 7-bit = 128 (2⁷) | Extended 8-bit = 256 | Unicode 16-bit = 65,536 | ISO 32-bit ≈ 4 billion</span>. Numbers are binary, images are pixels, audio/video analog or digital.'],['عدد الرموز = 2 أُس عدد البتات.','Symbols = 2^bits.'],['7-8-16-32.','7-8-16-32.']],
+['↔️',['اتجاه تدفق البيانات (Fig 1.2)','Data flow (Fig 1.2)'],['<b>Simplex</b>: اتجاه واحد (keyboard, monitor). <b>Half-duplex</b>: الاتنين يبعتوا بس مش مع بعض (walkie-talkie). <b>Full-duplex</b>: الاتنين في نفس الوقت (التليفون).','<b>Simplex</b>: one direction (keyboard, monitor). <b>Half-duplex</b>: both, but not at the same time (walkie-talkie). <b>Full-duplex</b>: both simultaneously (telephone).'],['Half = بالدور.','Half = taking turns.'],['Walkie "حول".','Walkie = "over".']],
+['🌐',['الشبكة وأهدافها','Networks & objectives'],['شبكة = أجهزة (nodes) متوصلة بروابط. 3 أهداف: مشاركة البيانات/الملفات، مشاركة الموارد الغالية (طابعة لـ 1000 موظف)، حماية البيانات (backup). معايير الجودة: Performance (throughput/delay)، Reliability، Security. وفي Distributed processing.','A network = nodes connected by links. 3 objectives: share data/files, share expensive resources (one printer for 1000 employees), data protection (backup). Criteria: Performance (throughput/delay), Reliability, Security. Plus distributed processing.'],['عايزين throughput أكتر و delay أقل.','More throughput, less delay.'],['']],
+['🖥️',['مكونات الشبكة','Network components'],['<b>End devices</b>: PC, mobile, IP camera, IP TV, PlayStation, printer. <b>Intermediate</b>: Repeater, Hub, Bridge, Switch, Gateway, Firewall, Router, Modem, Wireless AP, NIC. <b>Media</b>: سلكي (fiber = ضوء) / لاسلكي (radio). <b>Protocols</b>: FTP رفع/تنزيل ملفات كبيرة، SMTP إرسال إيميل، POP3 استقبال/تخزين إيميل، HTTP تصفح، Telnet تحكم عن بعد.','<b>End devices</b>: PC, mobile, IP camera, IP TV, PlayStation, printer. <b>Intermediate</b>: Repeater, Hub, Bridge, Switch, Gateway, Firewall, Router, Modem, Wireless AP, NIC. <b>Media</b>: wired (fiber = light) / wireless (radio). <b>Protocols</b>: FTP big file transfer, SMTP send mail, POP3 retrieve mail, HTTP browsing, Telnet remote login.'],['SMTP يبعت، POP3 يستلم.','SMTP sends, POP3 receives.'],['']],
+['🔗',['أنواع الاتصال (Fig 1.3)','Connection types (Fig 1.3)'],['<b>Point-to-Point</b>: لينك مخصص بين جهازين. <b>Multipoint</b>: أكتر من جهازين بيتشاركوا لينك واحد.','<b>Point-to-Point</b>: dedicated link between two devices. <b>Multipoint</b>: more than two devices share one link.'],['Bus = Multipoint.','Bus is multipoint.'],['']],
+['🕸️',['التوبولوجي (Fig 1.4–1.9)','Topologies (Fig 1.4–1.9)'],['<b>Mesh</b>: links = n(n−1)/2، ports = n−1 (n=5 → 10 links). <b>Star</b>: n links، 1 port، hub (single point of failure). <b>Bus</b>: multipoint، backbone + drop line + tap، attenuation. <b>Ring</b>: n links، 2 ports، اتجاه واحد. <b>Hybrid</b>: star backbone + bus branches. جرّب المعمل تحت 👇','<b>Mesh</b>: links = n(n−1)/2, ports = n−1 (n=5 → 10 links). <b>Star</b>: n links, 1 port, hub (single point of failure). <b>Bus</b>: multipoint, backbone + drop line + tap, attenuation. <b>Ring</b>: n links, 2 ports, one direction. <b>Hybrid</b>: star backbone + bus branches. Try the lab below 👇'],['Mesh = n(n−1)/2 مش n(n−1) (الدوبلكس لينك واحد).','Mesh = n(n−1)/2, not n(n−1).'],['']],
+['🏙️',['LAN / MAN / WAN','LAN / MAN / WAN'],['<b>LAN</b>: منطقة محدودة، 10–100 Mbps لحد 10 Gbps+، كل host له عنوان، قديمًا shared medium وحديثًا switch. <b>MAN</b>: مدينة — CATV وhead-end، WiMAX (IEEE 802.16)، DQDB (IEEE 802.6). <b>WAN</b>: بتربط أجهزة ربط (routers/switches/modems)، بتملكها شركات الاتصالات وبتأجّرها: Point-to-Point أو Switched.','<b>LAN</b>: limited area, 10–100 Mbps up to 10 Gbps+, unique host address, shared medium (old) vs switch (modern). <b>MAN</b>: a city — CATV with a head-end, WiMAX (IEEE 802.16), DQDB (IEEE 802.6). <b>WAN</b>: interconnects connecting devices (routers/switches/modems), owned by telecoms and leased: Point-to-Point or Switched.'],['LAN بتربط hosts، WAN بتربط أجهزة ربط.','LAN connects hosts; WAN connects connecting devices.'],['']],
+['🔀',['Internetwork والـ Switching','Internetwork & switching'],['internet (i صغير) = شبكتين أو أكتر متوصلين. <b>Circuit-switched</b>: دايرة مخصصة (تليفون)، من غير تخزين، مش كفء لو الاستخدام جزئي. <b>Packet-switched</b>: store-and-forward، queue في الراوتر، كل packet له header (source/destination/control/sequence)، ولو packet ضاع يتطلب إعادة إرساله.','internet (lowercase i) = two or more connected networks. <b>Circuit-switched</b>: dedicated circuit (telephone), no storage, inefficient at partial load. <b>Packet-switched</b>: store-and-forward, router queue, each packet has a header (source/destination/control/sequence); lost packets are re-requested.'],['Packet switching أكفأ لكن فيه delay.','Packet switching is more efficient but adds delay.'],['']],
+['⏳',['تاريخ الإنترنت','Internet history'],['<b>1967</b> ARPA تطرح ARPANET في اجتماع ACM (IMP). <b>1969</b> 4 nodes: UCLA, UCSB, SRI, Utah + بروتوكول NCP. <b>1972</b> Vint Cerf + Bob Kahn (Internetting Project). <b>1973</b> ورقة TCP (encapsulation, datagram, gateway). بعدين TCP اتقسم لـ TCP + IP = TCP/IP.','<b>1967</b> ARPA presents ARPANET at ACM (IMPs). <b>1969</b> four nodes: UCLA, UCSB, SRI, Utah + NCP. <b>1972</b> Vint Cerf + Bob Kahn (Internetting Project). <b>1973</b> TCP paper (encapsulation, datagram, gateway). TCP later split into TCP + IP = TCP/IP.'],['التقسيم: TCP يجزّأ ويكتشف الأخطاء، IP يعمل routing.','TCP segments/detects errors, IP routes.'],['']],
+['🏢',['الـ ISPs (4 مستويات)','ISPs (4 levels)'],['International → National (SprintLink, PSINet, UUNet, AGIS, Internet MCI) → Regional → Local. الـ National بتتوصل ببعض عبر <b>NAPs</b> (لحد 600 Mbps) أو <b>Peering points</b> خاصة. الإنترنت مش هرمي بسيط ودايمًا بيتغير.','International → National (SprintLink, PSINet, UUNet, AGIS, Internet MCI) → Regional → Local. National ISPs connect via <b>NAPs</b> (up to 600 Mbps) or private <b>peering points</b>. Today’s Internet is not strictly hierarchical and constantly changing.'],['']],
+['📜',['Protocols & Standards','Protocols & Standards'],['3 عناصر للبروتوكول: <b>Syntax</b> الشكل والترتيب، <b>Semantics</b> المعنى، <b>Timing</b> متى وبأي سرعة (مثال: إرسال 100 Mbps لمستقبل 1 Mbps = overload). <b>De facto</b> = بالاستخدام الواسع، <b>De jure</b> = باعتماد رسمي.','Protocol elements: <b>Syntax</b> structure, <b>Semantics</b> meaning, <b>Timing</b> when/how fast (100 Mbps sender vs 1 Mbps receiver = overload). <b>De facto</b> = by widespread use, <b>De jure</b> = officially approved.'],['de facto "بحكم الواقع"، de jure "بحكم القانون".','de facto = "by fact", de jure = "by law".']],
+['🏛️',['منظمات المعايير','Standards bodies'],['<b>ISO</b> دولية. <b>ITU</b>: CCITT اتغير اسمه لـ ITU-T في 1 مارس 1993. <b>ANSI</b> خاصة وغير ربحية أمريكية. <b>IEEE</b>: Project 802 (802.3 Ethernet، 802.4، 802.5 Token Ring). <b>EIA</b> مصنّعي الإلكترونيات. Forums بتسرّع الاعتماد، FCC جهة تنظيمية. <b>Internet Draft</b> عمره 6 شهور وبلا صفة رسمية ← <b>RFC</b> (Request for Comments) ← Internet Standard.','<b>ISO</b> international. <b>ITU</b>: CCITT renamed ITU-T on 1 March 1993. <b>ANSI</b> private nonprofit US. <b>IEEE</b>: Project 802 (802.3 Ethernet, 802.4, 802.5 Token Ring). <b>EIA</b> electronics manufacturers. Forums speed adoption; FCC is a regulator. <b>Internet Draft</b>: 6-month life, no official status → <b>RFC</b> (Request for Comments) → Internet Standard.'],['']]];
+const L2=[
+['🛤️',['الوسائط Guided vs Unguided (Fig 2.1)','Guided vs Unguided (Fig 2.1)'],['Guided = مسار مادي: Twisted-pair, Coaxial (كهرباء)، Fiber (ضوء). Unguided = free space (لاسلكي).','Guided = physical path: twisted-pair, coaxial (electric current), fiber (light). Unguided = free space (wireless).'],['']],
+['🌀',['Twisted-Pair: UTP vs STP','Twisted-Pair: UTP vs STP'],['سلكين نحاس معزولين ومجدولين: واحد إشارة والتاني ground، والمستقبل يقيس الفرق. اللف بيخلّي الضوضاء والـ crosstalk توصل للسلكين بالتساوي فتتلغي. <b>UTP</b> بلا shielding (أرخص، الأشهر). <b>STP</b> من IBM، foil أو braided mesh، أحسن حماية لكن أضخم وأغلى.','Two insulated copper conductors twisted: one signal, one ground; receiver measures the difference. Twisting equalises noise/crosstalk so it cancels. <b>UTP</b> unshielded (cheaper, common). <b>STP</b> by IBM, foil/braided mesh, better protection but bulkier and costlier.'],['STP نادر خارج IBM.','STP is rare outside IBM.']],
+['📊',['فئات UTP (Table 2.1)','UTP categories (Table 2.1)'],['<div class=wrap><table class=mono><tr><th>CAT<th>Mbps<th>Use<tr><td>1<td>&lt;0.1<td>Telephone<tr><td>2<td>2<td>T-1<tr><td>3<td>10<td>LANs<tr><td>4<td>20<td>Token Ring<tr><td>5<td>100<td>24 AWG<tr><td>5E<td>125<td>less crosstalk/EMI<tr><td>6<td>200<td>matched components<tr><td>7<td>600<td>SSTP</table></div>','<div class=wrap><table class=mono><tr><th>CAT<th>Mbps<th>Use<tr><td>1<td>&lt;0.1<td>Telephone<tr><td>2<td>2<td>T-1<tr><td>3<td>10<td>LANs<tr><td>4<td>20<td>Token Ring<tr><td>5<td>100<td>24 AWG<tr><td>5E<td>125<td>less crosstalk/EMI<tr><td>6<td>200<td>matched components<tr><td>7<td>600<td>SSTP</table></div>'],['EIA صنّفتها 7 فئات.','EIA defined 7 categories.']],
+['🔌',['RJ45 والأداء والتطبيقات','RJ45, performance, applications'],['RJ = Registered Jack، موصل keyed (اتجاه واحد صح). الـ attenuation بتزيد مع التردد (حادّة فوق 100 kHz) وبتتقاس dB/km. الـ gauge = سُمك السلك (18 أسمك وأحسن من 26). الاستخدام: التليفون، local loop، DSL، 10/100/1000/10G Base-T (أقصى طول 100 m).','RJ = Registered Jack, keyed connector (one correct direction). Attenuation rises with frequency (sharply above 100 kHz), measured in dB/km. Gauge = wire thickness (18 is thicker/better than 26). Uses: telephone, local loop, DSL, 10/100/1000/10G Base-T (max 100 m).'],['']],
+['🔁',['Straight-through vs Crossover','Straight-through vs Crossover'],['Tx/Rx: Router/Firewall/PC → Tx=1,2 و Rx=3,6. Switch → Tx=3,6 و Rx=1,2. <b>Straight</b> (1↔1…) بين أجهزة مختلفة (PC↔Switch). <b>Crossover</b> (1↔3، 2↔6) بين أجهزة متشابهة. 10/100 Base-T بيستخدموا 2 pairs، 1000/10G Base-T بيستخدموا 4 pairs ثنائية الاتجاه ومش محتاجة crossover (Auto MDI-X). T568A: 1 W/Orange، 2 Orange، 3 W/Green، 4 Blue، 5 W/Blue، 6 Green، 7 W/Brown، 8 Brown.','Tx/Rx: Router/Firewall/PC → Tx=1,2 Rx=3,6. Switch → Tx=3,6 Rx=1,2. <b>Straight</b> (1↔1…) joins different types (PC↔Switch). <b>Crossover</b> (1↔3, 2↔6) joins like devices. 10/100 Base-T use 2 pairs; 1000/10G Base-T use 4 bidirectional pairs, no crossover needed (Auto MDI-X). T568A: 1 W/Orange, 2 Orange, 3 W/Green, 4 Blue, 5 W/Blue, 6 Green, 7 W/Brown, 8 Brown.'],['مختلف = Straight، زي بعض = Crossover.','Different = straight, same = crossover.'],['"زي بعض يتقاطعوا".','"Likes cross."']],
+['📺',['Coaxial','Coaxial'],['قلب نحاس صلب ← insulation ← موصل خارجي (foil/braid، بيحمي ويكمّل الدايرة) ← insulation ← غلاف PVC. RG-59 (75Ω، Cable TV)، RG-58 (50Ω، Thin Ethernet)، RG-11 (50Ω، Thick Ethernet). موصلات BNC: BNC، BNC T، Terminator (يمنع انعكاس الإشارة). Attenuation أعلى من twisted-pair فبيحتاج repeaters أكتر. التطبيقات: تليفون (10,000 voice، 600 Mbps) واتبدّل بالفايبر، Cable TV، 10Base-2 (RG-58, 10 Mbps, 185 m)، 10Base-5 (RG-11, 10 Mbps, 500 m).','Solid copper core → insulation → outer conductor (foil/braid; shields and completes the circuit) → insulation → PVC jacket. RG-59 (75Ω, Cable TV), RG-58 (50Ω, Thin Ethernet), RG-11 (50Ω, Thick Ethernet). BNC connectors: BNC, BNC T, Terminator (prevents reflection). Higher attenuation than twisted-pair → more repeaters. Uses: telephone (10,000 voices, 600 Mbps; replaced by fiber), Cable TV, 10Base-2 (RG-58, 10 Mbps, 185 m), 10Base-5 (RG-11, 10 Mbps, 500 m).'],['10Base-2 = 185 m مش 200!','10Base-2 = 185 m, not 200!']],
+['💡',['Fiber: التركيب وانعكاس الضوء','Fiber: construction & light'],['زجاج أو بلاستيك، بينقل الضوء. زاوية السقوط &lt; الحرجة ← انكسار؛ = الحرجة ← على السطح؛ &gt; الحرجة ← انعكاس كلي داخل الـ core (Fig 2.10). Core + Cladding (أقل كثافة). الطبقات: Outer Jacket (PVC/Teflon) → Kevlar → Plastic buffer → Cladding → Core.','Glass/plastic carrying light. Angle &lt; critical → refraction; = critical → along the interface; &gt; critical → total reflection inside the core (Fig 2.10). Core + less-dense cladding. Layers: Outer Jacket (PVC/Teflon) → Kevlar → Plastic buffer → Cladding → Core.'],['']],
+['🌈',['أنماط الانتشار (Fig 7.12)','Propagation modes (Fig 7.12)'],['<b>Multimode step-index</b>: كثافة ثابتة وتغيّر مفاجئ ← تشويه. <b>Multimode graded-index</b>: كثافة تقل تدريجيًا ← مسارات منحنية وتشويه أقل. <b>Single-mode</b>: core صغير جدًا، مصدر مركّز (laser)، زاوية حرجة قرب 90° ← تشويه شبه صفر. الأحجام: 50/125، 62.5/125، 100/125 (multimode graded)، 7/125 (single).','<b>Multimode step-index</b>: constant density, sudden change → distortion. <b>Multimode graded-index</b>: density falls gradually → curved paths, less distortion. <b>Single-mode</b>: tiny core, focused laser, critical angle near 90° → almost no distortion. Sizes: 50/125, 62.5/125, 100/125 (multimode graded), 7/125 (single).'],['7/125 بس single-mode.','Only 7/125 is single-mode.']],
+['🔧',['موصلات وأداء وتطبيقات الفايبر','Fiber connectors, performance, uses'],['SC (Subscriber Channel، push/pull، Cable TV)، ST (Straight-Tip، bayonet، أجهزة الشبكة، أكتر ثقة)، LC، FC، MTP/MPO، MT-RJ (حجم RJ45). الفايبر attenuation أقل ← حوالي 10× repeaters أقل (50 km مقابل ~5 km). تطبيقات: backbone (WDM لحد 1600 Gbps، SONET)، Cable TV hybrid، LANs (100Base-FX، 1000Base-X). <div class=wrap><table class=mono><tr><th>Std<th>Speed<th>Mode<th>Max<tr><td>1000BASE-LX<td>1G<td>MM/SM<td>550 m / 5 km<tr><td>10GBASE-SR<td>10G<td>MM<td>400 m<tr><td>10GBASE-LR<td>10G<td>SM<td>10 km<tr><td>10GBASE-ER<td>10G<td>SM<td>30 km</table></div>مميزات: bandwidth، attenuation أقل، مناعة EMI، ضد التآكل، خفيف، صعب التنصت. عيوب: تركيب وصيانة، اتجاه واحد (فايبرين)، تكلفة أعلى.','SC (Subscriber Channel, push/pull, cable TV), ST (Straight-Tip, bayonet, networking, more reliable), LC, FC, MTP/MPO, MT-RJ (RJ45-sized). Lower attenuation → about 10× fewer repeaters (50 km vs ~5 km). Uses: backbone (WDM up to 1600 Gbps, SONET), hybrid cable TV, LANs (100Base-FX, 1000Base-X). <div class=wrap><table class=mono><tr><th>Std<th>Speed<th>Mode<th>Max<tr><td>1000BASE-LX<td>1G<td>MM/SM<td>550 m / 5 km<tr><td>10GBASE-SR<td>10G<td>MM<td>400 m<tr><td>10GBASE-LR<td>10G<td>SM<td>10 km<tr><td>10GBASE-ER<td>10G<td>SM<td>30 km</table></div>Pros: bandwidth, low attenuation, EMI immunity, corrosion-resistant, light, hard to tap. Cons: install/maintenance, unidirectional (two fibers), higher cost.'],['UTP أرخص ومداه 100 m؛ الفايبر أغلى وأبعد ومعندوش EMI.','UTP: cheaper, 100 m, EMI-prone; fiber: costlier, longer, EMI-immune.']],
+['📶',['Unguided: الطيف وطرق الانتشار','Unguided: spectrum & propagation'],['الطيف 3 kHz–900 THz (Fig 2.17): Radio+Microwave حتى 300 GHz، Infrared 300 GHz–400 THz، ثم الضوء. <b>Ground</b> (&lt;2 MHz، يتبع انحناء الأرض)، <b>Sky</b> (2–30 MHz، ينعكس من الـ ionosphere)، <b>Line-of-sight</b> (&gt;30 MHz، هوائيات متقابلة). <div class=wrap><table class=mono><tr><th>Band<th>Range<th>Prop<th>Use<tr><td>VLF<td>3–30 kHz<td>Ground<td>Navigation<tr><td>LF<td>30–300 kHz<td>Ground<td>Beacons<tr><td>MF<td>300 kHz–3 MHz<td>Sky<td>AM radio<tr><td>HF<td>3–30 MHz<td>Sky<td>CB, ship/aircraft<tr><td>VHF<td>30–300 MHz<td>Sky+LOS<td>VHF TV, FM<tr><td>UHF<td>300 MHz–3 GHz<td>LOS<td>UHF TV, cellular, paging, satellite<tr><td>SHF<td>3–30 GHz<td>LOS<td>Satellite<tr><td>EHF<td>30–300 GHz<td>LOS<td>Radar, satellite</table></div>','Spectrum 3 kHz–900 THz (Fig 2.17): radio+microwave up to 300 GHz, infrared 300 GHz–400 THz, then light. <b>Ground</b> (&lt;2 MHz, follows Earth’s curve), <b>Sky</b> (2–30 MHz, ionosphere reflection), <b>Line-of-sight</b> (&gt;30 MHz, aligned antennas). <div class=wrap><table class=mono><tr><th>Band<th>Range<th>Prop<th>Use<tr><td>VLF<td>3–30 kHz<td>Ground<td>Navigation<tr><td>LF<td>30–300 kHz<td>Ground<td>Beacons<tr><td>MF<td>300 kHz–3 MHz<td>Sky<td>AM radio<tr><td>HF<td>3–30 MHz<td>Sky<td>CB, ship/aircraft<tr><td>VHF<td>30–300 MHz<td>Sky+LOS<td>VHF TV, FM<tr><td>UHF<td>300 MHz–3 GHz<td>LOS<td>UHF TV, cellular, paging, satellite<tr><td>SHF<td>3–30 GHz<td>LOS<td>Satellite<tr><td>EHF<td>30–300 GHz<td>LOS<td>Radar, satellite</table></div>'],['']],
+['📻',['Radio / Microwave / Infrared','Radio / Microwave / Infrared'],['<b>Radio</b> 3 kHz–1 GHz: omnidirectional، مسافات طويلة، بتخترق الحيطان، data rate قليل، منظّمة حكوميًا، multicast (AM/FM/TV/paging). <b>Microwave</b> 1–300 GHz: unidirectional، line-of-sight، data rate عالي (~299 GHz)، مبتخترقش الحيطان، هوائيات parabolic dish وhorn، unicast (cellular/satellite/wireless LAN). <b>Infrared</b> 300 GHz–400 THz (1 mm–770 nm): مدى قصير، مبيخترقش الحيطان، IrDA (75 kbps/8 m ثم 4 Mbps)، يحتاج line-of-sight.','<b>Radio</b> 3 kHz–1 GHz: omnidirectional, long range, penetrates walls, low data rate, regulated, multicast (AM/FM/TV/paging). <b>Microwave</b> 1–300 GHz: unidirectional, line-of-sight, high data rate (~299 GHz), no wall penetration, parabolic dish & horn antennas, unicast (cellular/satellite/wireless LAN). <b>Infrared</b> 300 GHz–400 THz (1 mm–770 nm): short range, no wall penetration, IrDA (75 kbps/8 m → 4 Mbps), needs line-of-sight.'],['Radio = multicast، Microwave = unicast.','Radio = multicast, microwave = unicast.']]];
+const Q=[
+['Components','easy',['كام مكوّن في الاتصال؟','How many components in data communication?'],['3','4','5','6'],2,['Message, Sender, Receiver, Medium, Protocol.','Message, Sender, Receiver, Medium, Protocol.']],
+['Representation','easy',['أقصى عدد رموز لـ ASCII؟','Max symbols in ASCII (7-bit)?'],['64','128','256','65,536'],1,['2⁷ = 128.','2⁷ = 128.'],['256 هو Extended ASCII.','256 is Extended ASCII.']],
+['Representation','mid',['Unicode بكام bit؟','Unicode uses how many bits?'],['8','16','32','64'],1,['Unicode 16-bit = 65,536 رمز.','Unicode is 16-bit = 65,536 symbols.']],
+['Data Flow','easy',['Walkie-talkie مثال على؟','A walkie-talkie is…'],['Simplex','Half-duplex','Full-duplex','Multipoint'],1,['بالدور مش مع بعض.','Turn-taking.']],
+['Data Flow','easy',['التليفون مثال على؟','The telephone is…'],['Simplex','Half-duplex','Full-duplex','Broadcast'],2,['الاتنين في نفس الوقت.','Both at once.']],
+['Topologies','mid',['Mesh بـ 5 أجهزة، كام link؟','Links in a 5-node mesh?'],['5','10','20','25'],1,['5×4/2 = 10.','5×4/2 = 10.'],['20 غلط: ده n(n−1) من غير القسمة على 2.','20 forgets the ÷2.']],
+['Topologies','mid',['منافذ I/O لكل جهاز في Mesh بـ n أجهزة؟','I/O ports per device in an n-node mesh?'],['1','2','n−1','n'],2,['كل جهاز يتوصل بـ n−1 غيره.','Each connects to n−1 others.']],
+['Topologies','easy',['Star: single point of failure هو؟','Star’s single point of failure?'],['Cable','Hub','Node','Tap'],1,['الـ hub في النص.','The central hub.']],
+['Topologies','mid',['Ring بـ 6 أجهزة، كام link وكام port لكل جهاز؟','6-node ring: links and ports per device?'],['6 / 2','15 / 5','6 / 1','12 / 2'],0,['n links و2 ports.','n links, 2 ports.']],
+['Networks','mid',['أي منها Multipoint؟','Which is multipoint?','' ],['Mesh','Star','Bus','Point-to-point WAN'],2,['الـ bus بيتشارك backbone واحد.','Bus shares one backbone.']],
+['WAN','mid',['LAN بتربط hosts، WAN بتربط؟','LAN connects hosts; WAN connects…'],['Hosts','Connecting devices','Printers only','Users'],1,['switches/routers/modems.','switches/routers/modems.']],
+['MAN','hard',['DQDB هو معيار IEEE رقم؟','DQDB is IEEE…'],['802.3','802.6','802.11','802.16'],1,['802.16 = WiMAX، 802.6 = DQDB.','802.16 is WiMAX; 802.6 is DQDB.'],['متلخبطش 802.6 مع 802.16.','Don’t confuse 802.6/802.16.']],
+['Switching','mid',['أي switching فيه store-and-forward وqueue؟','Which switching uses store-and-forward & queues?'],['Circuit','Packet','Both','None'],1,['Packet-switched.','Packet-switched.']],
+['History','mid',['أول 4 nodes في ARPANET سنة؟','ARPANET’s first four nodes year?'],['1967','1969','1972','1973'],1,['1967 فكرة، 1969 تنفيذ.','1967 idea, 1969 reality.'],['1967 هي الفكرة بس.','1967 was only the proposal.']],
+['History','hard',['TCP اتقسم لـ؟','TCP was split into…'],['TCP + UDP','TCP + IP','IP + HTTP','NCP + IP'],1,['TCP + IP = TCP/IP.','TCP + IP = TCP/IP.']],
+['Standards','mid',['CCITT اتغير لـ ITU-T في؟','CCITT became ITU-T in…'],['1969','1 Mar 1993','1973','2000'],1,['1 مارس 1993.','1 March 1993.']],
+['Standards','mid',['Internet Draft عمره؟','Internet Draft lifetime?'],['1 month','6 months','1 year','Unlimited'],1,['6 شهور وبلا صفة رسمية.','6 months, unofficial.']],
+['Twisted-Pair','mid',['ليه الأسلاك مجدولة؟','Why are wires twisted?'],['Looks','Equal noise exposure','Faster light','Cheaper'],1,['الضوضاء توصل للاتنين بالتساوي فتتلغي.','Noise hits both equally and cancels.']],
+['Twisted-Pair','easy',['STP صنعتها؟','STP was developed by?'],['Cisco','IBM','Intel','IEEE'],1,['IBM.','IBM.']],
+['Twisted-Pair','mid',['CAT5E سرعتها؟','CAT5E data rate?'],['100','125','200','600'],1,['125 Mbps.','125 Mbps.'],['CAT5 = 100، CAT5E = 125.','CAT5 = 100, CAT5E = 125.']],
+['Cabling','mid',['PC ↔ Switch محتاج؟','PC ↔ Switch needs…'],['Straight-through','Crossover','Fiber only','Coax'],0,['أجهزة مختلفة.','Different device types.']],
+['Cabling','mid',['Switch ↔ Switch محتاج؟','Switch ↔ Switch needs…'],['Straight-through','Crossover','Rollover','Coax'],1,['نفس النوع (Auto MDI-X بيستغنى عنه في الحديث).','Same type (modern Auto MDI-X can avoid it).']],
+['Cabling','hard',['Switch بيبعت على أنهي pins؟','Switch transmits on pins…'],['1,2','3,6','4,5','7,8'],1,['Switch: Tx=3,6.','Switch Tx = 3,6.'],['PC/Router عكس Switch.','PC/Router are the opposite.']],
+['Coaxial','mid',['RG-58 بيتستخدم في؟','RG-58 is used for…'],['Cable TV','Thin Ethernet','Thick Ethernet','Fiber'],1,['10Base-2 — 185 m.','10Base-2 — 185 m.']],
+['Coaxial','hard',['مدى 10Base-5؟','10Base-5 range?'],['100 m','185 m','500 m','5 km'],2,['RG-11، 500 m.','RG-11, 500 m.']],
+['Fiber','mid',['Single-mode بيستخدم؟','Single-mode uses…'],['LED','Laser','Radio','Infrared'],1,['مصدر مركّز.','Highly focused source.']],
+['Fiber','hard',['حجم الـ single-mode؟','Single-mode fiber size?'],['50/125','62.5/125','100/125','7/125'],3,['الأخير في الجدول.','Last row of Table 2.3.']],
+['Fiber','mid',['10GBASE-ER أقصى مدى؟','10GBASE-ER max length?'],['400 m','10 km','30 km','5 km'],2,['ER = 30 km.','ER = 30 km.'],['LR = 10 km.','LR = 10 km.']],
+['Fiber','easy',['الفايبر يحتاج repeaters أقل بحوالي؟','Fiber needs about how many × fewer repeaters?'],['2×','5×','10×','100×'],2,['10×.','10×.']],
+['Wireless','mid',['Sky propagation بيستخدم؟','Sky propagation relies on…'],['Earth curve','Ionosphere','Cables','Satellite dish'],1,['الـ ionosphere بيعكس الإشارة.','The ionosphere reflects signals.']],
+['Wireless','mid',['Radio waves نوعها؟','Radio waves are mainly…'],['Unicast','Multicast','Line-of-sight only','Infrared'],1,['Omnidirectional.','Omnidirectional.']],
+['Wireless','hard',['IrDA الأصلي؟','Original IrDA?'],['75 kbps / 8 m','4 Mbps / 8 m','75 Mbps / 1 m','1 Mbps / 100 m'],0,['75 kbps ولحد 8 m.','75 kbps up to 8 m.']],
+['Wireless','mid',['AM radio في band؟','AM radio band?'],['LF','MF','VHF','UHF'],1,['MF — Sky.','MF — Sky.']]];
+const FC=[['SC','Subscriber Channel — cable TV, push/pull'],['ST','Straight-Tip — bayonet, networking'],['MT-RJ','Same size as RJ45'],['RG-59','75Ω — Cable TV'],['RG-58','50Ω — Thin Ethernet (10Base-2, 185 m)'],['RG-11','50Ω — Thick Ethernet (10Base-5, 500 m)'],['Mesh links','n(n−1)/2'],['Star ports','1 per device, n links'],['Ring','n links, 2 ports, one direction'],['Half-duplex','Walkie-talkie'],['ASCII','7-bit = 128'],['Unicode','16-bit = 65,536'],['SMTP / POP3','Send mail / retrieve mail'],['CCITT','→ ITU-T on 1 March 1993'],['Internet Draft','6-month life, no official status'],['TCP/IP','TCP + IP (split of original TCP)'],['CAT5E','125 Mbps, less crosstalk'],['CAT7','600 Mbps, SSTP'],['Switch Tx','pins 3,6 (PC/Router Tx = 1,2)'],['Single-mode','7/125, laser, ≈ no distortion'],['Graded-index','Density falls toward edge → curved rays'],['Sky wave','2–30 MHz, ionosphere'],['Microwave','1–300 GHz, unidirectional, unicast'],['Infrared','300 GHz–400 THz, short range, IrDA']];
+const FA={'SC':'SC','ST':'ST'};
+let qi=0,qs=0,qa=false,fl={},kn=+LS('kn')||0,fci=0,ca='PC',cb='Switch',cc='straight',tt='mesh',tn=5;
+const secs=(arr,id)=>arr.map(c=>`<details class=rv><summary>${c[0]} ${P(c[1])}</summary><p>${P(c[2])}</p>${c[3]&&c[3][0]?`<div class=tip>${tr('watch')}: ${P(c[3])}</div>`:''}${c[4]&&c[4][0]?`<div class=mn>${tr('mn')}: ${P(c[4])}</div>`:''}</details>`).join('');
+let tk=0;
+function topo(){const n=tn,t=tt,cx=160,cy=118,R=88,Q=[],bus=t=='bus';
+for(let i=0;i<n;i++){if(bus)Q.push([30+i*(260/Math.max(n-1,1)),i%2?182:62]);else{const g=2*Math.PI*i/n-Math.PI/2;Q.push([cx+R*Math.cos(g),cy+R*.95*Math.sin(g)])}}
+const a=tk%n,b=(a+1+((tk*5)%Math.max(n-1,1)))%n,ls=[];let path,links,ports,hops=0,extra='',txt;
+if(t=='mesh'){for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)ls.push([Q[i],Q[j]]);links=n*(n-1)/2;ports=n-1;path=`M${Q[a]} L${Q[b]}`;
+ txt=P([`PC${a+1} بيبعت لـ PC${b+1} على لينك مباشر مخصوص بينهم، ومفيش حد تاني بيشاركه.`,`PC${a+1} sends to PC${b+1} over its own dedicated link; nobody else shares it.`])}
+else if(t=='star'){Q.forEach(p=>ls.push([[cx,cy],p]));links=n;ports=1;path=`M${Q[a]} L${cx},${cy} L${Q[b]}`;
+ extra=`<g transform="translate(${cx-22},${cy-11})"><rect class=d width=44 height=22 rx=5 /><rect class=sc x=6 y=6 width=6 height=8 /><rect class=sc x=16 y=6 width=6 height=8 /><rect class=sc x=26 y=6 width=6 height=8 /><text class=t x=22 y=34>Hub</text></g>`;
+ txt=P([`PC${a+1} ← الـ Hub ← PC${b+1}: كل الرسايل بتعدي على المركز، ولو الـ Hub وقع الشبكة كلها بتقف.`,`PC${a+1} → Hub → PC${b+1}: all traffic crosses the center; if the hub fails the whole network stops.`])}
+else if(t=='ring'){for(let i=0;i<n;i++)ls.push([Q[i],Q[(i+1)%n]]);links=n;ports=2;hops=(b-a+n)%n;path='M'+Q[a];for(let k=1;k<=hops;k++)path+=' L'+Q[(a+k)%n];
+ txt=P([`الرسالة بتمشي في اتجاه واحد من جهاز لجهاز (${hops} قفزة) لحد ما توصل PC${b+1}.`,`The frame travels one way, device to device (${hops} hop${hops>1?'s':''}), until it reaches PC${b+1}.`])}
+else{Q.forEach(p=>ls.push([[p[0],125],p]));links=`1 backbone + ${n} drops`;ports=1;path=`M${Q[a]} L${Q[a][0]},125 L${Q[b][0]},125 L${Q[b]}`;
+ extra=`<line x1=14 y1=125 x2=306 y2=125 style="stroke-dasharray:none;stroke-opacity:.75;stroke-width:4" /><rect class=d x=6 y=117 width=6 height=16 /><rect class=d x=308 y=117 width=6 height=16 />`;
+ txt=P([`PC${a+1} بيبعت على الـ backbone والإشارة بتوصل لكل الأجهزة، بس PC${b+1} هو اللي بياخدها.`,`PC${a+1} transmits on the backbone, every device hears it, but only PC${b+1} accepts it.`])}
+const pcs=Q.map((p,i)=>`<g transform="translate(${p[0]-14},${p[1]-11})"><rect class="d ${i==a?'src':i==b?'dst':''}" width=28 height=18 rx=3 /><rect class=sc x=3 y=3 width=22 height=11 rx=1 /><rect class=d x=10 y=18 width=8 height=3 /><text class=t x=14 y=32>PC${i+1}</text></g>`).join('');
+return `<svg class="net tp" viewBox="0 0 320 250" role=img aria-label=topology>${ls.map(l=>`<line x1=${l[0][0]} y1=${l[0][1]} x2=${l[1][0]} y2=${l[1][1]} />`).join('')}${extra}${pcs}<rect class=pkt x=-5 y=-5 width=10 height=10 rx=2><animateMotion dur=2.6s repeatCount=1 fill=freeze path="${path}" /></rect></svg>
+<p><span class=pill style="border-color:var(--m)">${P(['مرسل','Sender'])}</span><span class=pill style="border-color:var(--ok)">${P(['مستقبل','Receiver'])}</span></p><div class=tip>${txt}</div><p class=mono>${tr('links')}: <b>${links}</b> &nbsp;|&nbsp; ${tr('ports')}: <b>${ports}</b></p>`}
+function cable(){const sw=d=>d=='Switch';const same=sw(ca)==sw(cb);const need=same?'crossover':'straight';const ok=cc==need;
+const txt=ok?P(['✅ تمام! '+(same?'الجهازين من نفس النوع (Tx على نفس الـ pins) فلازم Crossover (1↔3، 2↔6).':'الجهازين مختلفين (Tx=1,2 مقابل Rx=1,2) فـ Straight-through شغال.'),'✅ Correct! '+(same?'Same device class (same Tx pins) → crossover (1↔3, 2↔6).':'Different classes (one Tx=1,2 meets the other’s Rx=1,2) → straight-through works.')]):P(['❌ غلط. المطلوب: '+need+'. '+(same?'الاتنين بيبعتوا على نفس الـ pins.':'Tx بتقابل Rx بالفعل.'),'❌ Wrong. Needed: '+need+'. '+(same?'Both transmit on the same pins.':'Tx already meets Rx.')]);
+const o=a=>['PC','Router','Firewall','Switch'].map(d=>`<option ${d==a?'selected':''}>${d}</option>`).join('');
+return `<div class=row><label>${tr('devA')} <select id=ca>${o(ca)}</select></label><label>${tr('devB')} <select id=cb>${o(cb)}</select></label><label>${tr('cab')} <select id=cc><option value=straight ${cc=='straight'?'selected':''}>Straight-through</option><option value=crossover ${cc=='crossover'?'selected':''}>Crossover</option></select></label></div><p class=mono>${ca}: Tx ${sw(ca)?'3,6':'1,2'} / Rx ${sw(ca)?'1,2':'3,6'} &nbsp; ${cb}: Tx ${sw(cb)?'3,6':'1,2'} / Rx ${sw(cb)?'1,2':'3,6'}</p><div class="card ${ok?'ok':'no'}">${txt}</div>`}
+function quiz(){if(qi>=Q.length)return `<div class=card><h3>${tr('score')}: ${qs}/${Q.length}</h3><button id=qr>${tr('again')}</button></div>`;
+const q=Q[qi];return `<div class=card><div class=row><span class=pill>🏷️ ${q[0]}</span><span class=pill>🎯 ${tr(q[1])}</span><span class=pill>${qi+1}/${Q.length}</span><span class=pill>${tr('score')}: ${qs}</span></div><progress value=${qi} max=${Q.length} style="width:100%"></progress><h3>${P(q[2])}</h3>${q[3].map((o,i)=>`<button class=opt data-o=${i}>${o}</button>`).join('')}<div id=fb></div></div>`}
+function fcard(){const c=FC[fci%FC.length];return `<div class="fc ${fl.f?'fl':''}" id=fcc tabindex=0 role=button aria-label="${tr('tap')}"><div><div><b class=mono>${c[0]}</b></div><div class=mono>${c[1]}</div></div></div><div class=row><button id=fk>${tr('know')}</button><button id=fd>${tr('dk')}</button><span class=pill>${tr('tap')} · ${fci+1}/${FC.length} · ✅ ${kn}</span></div>`}
+let R={v:'home',i:0},lab=1,done={};
+try{R=JSON.parse(LS('route'))||R;done=JSON.parse(LS('done'))||{}}catch(e){}
+const HM=()=>`<h2 style="margin-top:36px">✨ ${P(['اختار اللي عايز تذاكره','Pick where to start'])}</h2><div class=grid>`+[['l1','📖',tr('L1').slice(3),L1.length+P([' موضوع',' topics'])],['l2','📡',tr('L2').slice(3),L2.length+P([' موضوع',' topics'])],['labs','🎮',tr('LB').slice(3),P(['معملين','2 labs'])],['quiz','🧪',tr('Q').slice(3),Q.length+P([' سؤال',' questions'])],['fc','🃏',tr('F').slice(3),FC.length+P([' كارت',' cards'])]].map(x=>`<button class=lc data-go="${x[0]},0"><span class=n>${x[1]}</span><b>${x[2]}</b><small>${x[3]}</small></button>`).join('')+`</div>`;
+const CT=()=>`<section id=contact><h2>${tr('C')}</h2><div class="card me"><div class=avw><div class=av><img src="profile.jpg" alt="Youssef Sobhy" onerror="this.replaceWith(document.createTextNode('YS'))"></div></div><h3>Youssef Sobhy Mohammed</h3><div>${tr('role')}</div><div style="color:var(--mu)">${tr('uni')} · ${tr('age')}</div><span class=badge><i></i>${tr('avail')}</span></div>
+<div class=cts><a class="cc wa" href="https://wa.me/201066781530" target=_blank rel=noopener><span class=ci>💬</span><b>WhatsApp</b><small>${P(['ابعتلي رسالة دلوقتي','Chat with me now'])}</small></a><a class="cc em" href="mailto:youssef13sobhy2008@gmail.com"><span class=ci>✉️</span><b>Email</b><small>youssef13sobhy2008@gmail.com</small></a><a class="cc gh" href="https://github.com/youssefsobhy13" target=_blank rel=noopener><span class=ci>🐙</span><b>GitHub</b><small>${P(['شوف البروفايل','View my profile'])}</small></a><a class="cc li" href="https://www.linkedin.com/in/eng-youssef-sobhy" target=_blank rel=noopener><span class=ci>in</span><b>LinkedIn</b><small>${P(['اتواصل معايا مهنياً','Connect with me'])}</small></a></div>
+<div class=card><div class=row style="justify-content:space-between"><b>💌 ${tr('msg')}</b><button id=cpm>${tr('cp')}</button></div><textarea id=mt rows=3 aria-label="${tr('msg')}"></textarea><p><button class=btn id=ms>${tr('send')} →</button></p></div></section>`;
+function go(v,i){R={v,i:i||0};LS('route',JSON.stringify(R));render();scrollTo(0,0)}
+function lecV(A,v){const i=Math.min(R.i||0,A.length-1),c=A[i],k=v+':',dn=Object.keys(done).filter(x=>x.startsWith(k)).length,ttl=v=='l1'?tr('L1'):tr('L2');
+return `<section class=lay><aside class=side><div class=sh>${ttl}</div>${A.map((x,j)=>`<button class="it ${j==i?'on':''} ${done[k+j]?'dn':''}" data-go="${v},${j}">${x[0]} ${P(x[1])}</button>`).join('')}<div class=pg>${P(['التقدم','Progress'])}: ${dn}/${A.length}<progress value=${dn} max=${A.length} style="width:100%"></progress></div></aside>
+<article class=art><div class=bc><a href="#" data-go="home,0">${tr('home')}</a> › <a href="#" data-go="${v},0">${v=='l1'?tr('l1'):tr('l2')}</a> › <b>${P(c[1])}</b></div><h1>${c[0]} ${P(c[1])}</h1><div class=card>${P(c[2])}</div>${c[3]&&c[3][0]?`<div class=tip>${tr('watch')}: ${P(c[3])}</div>`:''}${c[4]&&c[4][0]?`<div class=mn>${tr('mn')}: ${P(c[4])}</div>`:''}
+<div class=row style="margin-top:24px"><button data-done="${k+i}">${done[k+i]?'✓ ':''}${P(['تم الإنجاز','Mark as done'])}</button></div>
+<div class=pn>${i>0?`<button data-go="${v},${i-1}">← ${P(A[i-1][1])}</button>`:'<span></span>'}${i<A.length-1?`<button class=btn data-go="${v},${i+1}">${P(A[i+1][1])} →</button>`:`<button class=btn data-go="${v=='l1'?'l2':'quiz'},0">${v=='l1'?tr('l2'):tr('quiz')} →</button>`}</div></article></section>`}
+function labV(){return `<section><h2>${tr('LB')}</h2><div class=row><button data-lab=1 class="${lab==1?'on':''}">${tr('tp')}</button><button data-lab=2 class="${lab==2?'on':''}">${tr('cb')}</button></div>`+(lab==1?`<div class=card><h3>${tr('tp')}</h3><div class=row>${['mesh','star','ring','bus'].map(t=>`<button data-t=${t} class="${t==tt?'on':''}">${t[0].toUpperCase()+t.slice(1)}</button>`).join('')}<label>n = <b>${tn}</b> <input type=range id=tn min=2 max=10 value=${tn} style="width:140px"></label></div><div id=tv>${topo()}</div></div>`:`<div class=card><h3>${tr('cb')}</h3>${cable()}</div>`)+`</section>`}
+function render(){const h=document.documentElement;h.lang=lang;h.dir=lang=='ar'?'rtl':'ltr';h.style.fontSize=fz+'px';h.dataset.theme=theme||'light';
+document.title=tr('title');document.querySelectorAll('header nav a').forEach(a=>{a.textContent=tr(a.dataset.k);a.classList.toggle('on',a.dataset.k==R.v);a.onclick=e=>{e.preventDefault();go(a.dataset.k,0)}});document.getElementById('lg').textContent=tr('lang');
+const v=R.v;let html;
+if(v=='l1')html=lecV(L1,'l1');else if(v=='l2')html=lecV(L2,'l2');else if(v=='labs')html=labV();
+else if(v=='quiz')html=`<section><h2>${tr('Q')}</h2><div id=qz>${quiz()}</div></section>`;
+else if(v=='fc')html=`<section><h2>${tr('F')}</h2><div id=fz>${fcard()}</div></section>`;
+else html=`<section id=home><div class=hero><div><span class=eyebrow>🌐 Computer Networks</span><h1>${tr('title')}</h1><p class=lead>${tr('sub')}</p><div class=chips><span class=pill>${P(['٢ محاضرات','2 lectures'])}</span><span class=pill>${P(['عربي + English','AR + EN'])}</span><span class=pill>${P(['تفاعلي','Interactive'])}</span></div><button class=btn data-go="l1,0">${tr('start')} →</button></div><svg class=net viewBox="0 0 420 340" role=img aria-label="devices"><g><line x1=100 y1=80 x2=172 y2=182 /><line x1=315 y1=80 x2=248 y2=182 /><line x1=95 y1=240 x2=172 y2=196 /><line x1=335 y1=262 x2=248 y2=196 /><line x1=210 y1=275 x2=210 y2=206 /></g>
+<g class=dv><rect class=d x=20 y=38 width=80 height=56 rx=6 /><rect class=sc x=27 y=45 width=66 height=42 rx=3 /><rect class=d x=52 y=94 width=16 height=12 /><rect class=d x=36 y=106 width=48 height=7 rx=3 /></g>
+<g class=dv style="animation-delay:-1.2s"><rect class=d x=315 y=45 width=70 height=48 rx=5 /><rect class=sc x=321 y=51 width=58 height=36 rx=2 /><path class=d d="M303 100 H397 L405 112 H295 Z" /></g>
+<g class=dv style="animation-delay:-2.4s"><rect class=d x=25 y=222 width=70 height=26 rx=4 /><rect class=d x=25 y=252 width=70 height=26 rx=4 /><rect class=led x=33 y=232 width=6 height=6 /><rect class=led x=33 y=262 width=6 height=6 /><rect class=sc x=48 y=233 width=38 height=4 rx=2 /><rect class=sc x=48 y=263 width=38 height=4 rx=2 /></g>
+<g class=dv style="animation-delay:-3.1s"><rect class=d x=335 y=228 width=40 height=72 rx=9 /><rect class=sc x=341 y=240 width=28 height=44 rx=3 /><rect class=led x=352 y=289 width=6 height=6 rx=3 /></g>
+<g class=dv style="animation-delay:-.6s"><rect class=d x=165 y=275 width=90 height=26 rx=5 /><rect class=sc x=174 y=283 width=8 height=10 /><rect class=sc x=188 y=283 width=8 height=10 /><rect class=sc x=202 y=283 width=8 height=10 /><rect class=sc x=216 y=283 width=8 height=10 /><rect class=led x=236 y=285 width=6 height=6 /></g>
+<g class=dv style="animation-delay:-1.8s"><path class=wf d="M188 150 Q210 126 232 150" /><path class=wf d="M196 160 Q210 144 224 160" /><rect class=d x=168 y=170 width=84 height=36 rx=9 /><rect class=led x=180 y=184 width=6 height=6 /><rect class=led x=194 y=184 width=6 height=6 /><rect class=led x=208 y=184 width=6 height=6 /><rect class=sc x=224 y=184 width=18 height=6 rx=3 /></g>
+<rect class=pkt x=-4 y=-4 width=8 height=8 rx=2><animateMotion dur=2.6s repeatCount=indefinite path="M100 80 L172 182" /></rect>
+<rect class=pkt x=-4 y=-4 width=8 height=8 rx=2><animateMotion dur=3.2s repeatCount=indefinite path="M248 182 L315 80" /></rect>
+<rect class=pkt x=-4 y=-4 width=8 height=8 rx=2><animateMotion dur=2.9s repeatCount=indefinite path="M95 240 L172 196" /></rect>
+<rect class=pkt x=-4 y=-4 width=8 height=8 rx=2><animateMotion dur=3.5s repeatCount=indefinite path="M248 196 L335 262" /></rect>
+<rect class=pkt x=-4 y=-4 width=8 height=8 rx=2><animateMotion dur=2.2s repeatCount=indefinite path="M210 206 L210 275" /></rect></svg></div><div class=stats><div class=stat><span>📚</span><div><b data-n=${L1.length+L2.length}>0</b><small>${tr('c1')}</small></div></div><div class=stat><span>✅</span><div><b data-n=${Q.length}>0</b><small>${tr('c2')}</small></div></div><div class=stat><span>🃏</span><div><b data-n=${FC.length}>0</b><small>${tr('F').slice(3)}</small></div></div><div class=stat><span>🎮</span><div><b data-n=2>0</b><small>${tr('c3')}</small></div></div></div>${HM()}</section>`;
+document.getElementById('app').innerHTML=`<div class=vw>${html}</div>${CT()}`;
+document.getElementById('foot').innerHTML=`<span>Development by Youssef Sobhy Mohammed</span><span>${tr('src')}</span>`;
+wire();
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=e=>{e.preventDefault();const p=b.dataset.go.split(',');go(p[0],+p[1])});
+document.querySelectorAll('[data-done]').forEach(b=>b.onclick=()=>{const k=b.dataset.done;done[k]?delete done[k]:done[k]=1;LS('done',JSON.stringify(done));render()});
+document.querySelectorAll('[data-lab]').forEach(b=>b.onclick=()=>{lab=+b.dataset.lab;render()});}
+function wire(){const $=s=>document.querySelector(s)||{};
+document.querySelectorAll('.rv').forEach(e=>e.classList.add('in'));
+document.querySelectorAll('[data-n]').forEach(e=>{const n=+e.dataset.n;let i=0;const s=setInterval(()=>{i=Math.min(n,i+Math.ceil(n/20));e.textContent=i;if(i>=n)clearInterval(s)},40)});
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{tt=b.dataset.t;render();});
+$('#tn').oninput=e=>{tn=+e.target.value;$('#tv').innerHTML=topo();e.target.previousElementSibling.textContent=tn};
+['ca','cb','cc'].forEach(id=>$('#'+id).onchange=e=>{if(id=='ca')ca=e.target.value;if(id=='cb')cb=e.target.value;if(id=='cc')cc=e.target.value;render()});
+document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(qa)return;qa=true;const q=Q[qi],i=+b.dataset.o,ok=i==q[4];if(ok)qs++;
+document.querySelectorAll('.opt').forEach((x,j)=>{if(j==q[4])x.classList.add('ok');else if(j==i)x.classList.add('no')});
+$('#fb').innerHTML=`<div class=tip>${ok?'✅':'❌'} ${q[3][q[4]]}<br>${tr('why')}: ${P(q[5])}${q[6]?`<br>${tr('trap')}: ${P(q[6])}`:''}</div><p><button id=qn>${tr('next')}</button></p>`;
+$('#qn').onclick=()=>{qi++;qa=false;$('#qz').innerHTML=quiz();wire2()}});
+if($('#qr'))$('#qr').onclick=()=>{qi=0;qs=0;qa=false;$('#qz').innerHTML=quiz();wire2()};
+const f=$('#fcc');f.onclick=()=>{fl.f=!fl.f;f.classList.toggle('fl')};f.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();f.click()}};
+$('#fk').onclick=()=>{kn++;LS('kn',kn);fci++;fl.f=false;$('#fz').innerHTML=fcard();wire3()};$('#fd').onclick=()=>{fci++;fl.f=false;$('#fz').innerHTML=fcard();wire3()};
+$('#cpm').onclick=()=>{try{navigator.clipboard.writeText('youssef13sobhy2008@gmail.com');$('#cpm').textContent='✓'}catch(e){}};
+$('#ms').onclick=()=>window.open('https://wa.me/201066781530?text='+encodeURIComponent($('#mt').value),'_blank','noopener');}
+function wire2(){const o=document.querySelectorAll('.opt');if(o.length||document.getElementById('qr'))render2('quiz')}
+function wire3(){render2('fc')}
+function render2(w){const y=scrollY;render();scrollTo(0,y)}
+document.getElementById('lg').onclick=()=>{lang=lang=='ar'?'en':'ar';LS('lang',lang);render()};
+document.getElementById('th').onclick=()=>{theme=theme=='dark'?'light':'dark';LS('theme',theme);render()};
+document.getElementById('fs').onclick=()=>{fz=fz>=22?14:fz+2;LS('fz',fz);render()};
+addEventListener('scroll',()=>{const d=document.documentElement;document.getElementById('bar').style.width=(scrollY/(d.scrollHeight-innerHeight||1)*100)+'%'});
+setInterval(()=>{const v=document.getElementById('tv');if(v&&document.activeElement.id!='tn'){tk++;v.innerHTML=topo()}},3200);
+try{render()}catch(err){document.getElementById('app').innerHTML='<section><div class=card><h3>⚠️</h3><p>Your browser could not run this page. Please update it or open the link in Chrome / Safari / Edge.</p><p dir=rtl>المتصفح مش قادر يشغّل الصفحة. حدّثه أو افتح اللينك في Chrome أو Safari أو Edge.</p></div></section>'}
+try{(function(){const c=document.getElementById('bgfx'),x=c.getContext('2d');let W,H,col=[],f=0;const O=[],S=[];
+const sz=()=>{W=c.width=innerWidth;H=c.height=innerHeight};sz();addEventListener('resize',sz);
+for(let i=0;i<7;i++)O.push({x:Math.random(),y:Math.random(),r:170+Math.random()*190,p:Math.random()*6,s:.00018+Math.random()*.0003,k:i%3});
+const E=['💻','🖥️','📡','🖧','📱','🖨️','🔌','💾','⌨️'];for(let i=0;i<20;i++)S.push({x:Math.random(),y:Math.random(),r:2+Math.random()*5,v:.0002+Math.random()*.0004,p:Math.random()*6,k:i%3,e:E[i%E.length]});
+const cols=()=>{const st=getComputedStyle(document.documentElement);col=['--c','--m','--g'].map(k=>{const v=st.getPropertyValue(k).trim();return /^#[0-9a-f]{6}$/i.test(v)?v:'#2563EB'})};
+const hx=(h,a)=>`rgba(${parseInt(h.slice(1,3),16)},${parseInt(h.slice(3,5),16)},${parseInt(h.slice(5,7),16)},${a})`;
+function d(t){if(f++%90==0)cols();x.clearRect(0,0,W,H);const dk=document.documentElement.dataset.theme=='dark';
+O.forEach(o=>{const px=(o.x+Math.sin(t*o.s+o.p)*.14)*W,py=(o.y+Math.cos(t*o.s*1.3+o.p)*.14)*H,g=x.createRadialGradient(px,py,0,px,py,o.r);g.addColorStop(0,hx(col[o.k],dk?.2:.15));g.addColorStop(1,hx(col[o.k],0));x.fillStyle=g;x.beginPath();x.arc(px,py,o.r,0,7);x.fill()});
+x.textAlign='center';x.textBaseline='middle';S.forEach(s=>{s.y-=s.v;if(s.y<-.06)s.y=1.06;const px=(s.x+Math.sin(t*.0004+s.p)*.03)*W,py=s.y*H;x.save();x.translate(px,py);x.rotate(Math.sin(t*.0005+s.p)*.35);x.globalAlpha=dk?.16:.14;x.font=(s.r*6+14)+'px serif';x.fillText(s.e,0,0);x.restore()});
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&(navigator.hardwareConcurrency||4)>2)requestAnimationFrame(d)}
+requestAnimationFrame(d)})()}catch(e){}
+</script>
+</body>
+</html>
